@@ -30,7 +30,9 @@ import jp.co.sss.lms.util.TrainingTime;
  */
 @Service
 public class StudentAttendanceService {
-
+	
+//	@Autowired
+//	private TrainingTime trainingTime;
 	@Autowired
 	private DateUtil dateUtil;
 	@Autowired
@@ -332,6 +334,25 @@ public class StudentAttendanceService {
 		}
 		// 完了メッセージ
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
+	}
+	
+	/**
+	 * 過去日の未入力チェック
+	 * 
+	 * @return 過去日の未入力が存在するか
+	 * @throws ParseException
+	 */
+	public Boolean notEnterCheck() throws ParseException {
+		// 今日の日付を取得
+		Date today = new Date();
+
+		// 過去日の未入力件数を取得
+		int notEnterCount = tStudentAttendanceMapper.notEnterCount(
+				today,
+				loginUserDto.getLmsUserId(),
+				loginUserDto.getCourseId());
+
+		return notEnterCount > 0;
 	}
 
 }

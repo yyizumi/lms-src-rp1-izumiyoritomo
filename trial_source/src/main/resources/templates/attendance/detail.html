@@ -79,13 +79,21 @@
 			setInterval(function() {
 				$("#now").text('現在の時刻は　' + getClock() + '　です。');
 			}, 1000);
+			
+			const notEnterCount = /*[[${notEnterCount}]]*/ false;
+
+        if (notEnterCount) {
+            alert("過去日の勤怠に未入力があります。");
+        }
 		});
+		
 		function getClock() {
 			const today =  new Date();
 			const hours = ('0' + today.getHours()).slice(-2);
 			const minutes = ('0' + today.getMinutes()).slice(-2);
 			return hours + ':' + minutes;
 		}
+		
 	</script>
 
 </body>
