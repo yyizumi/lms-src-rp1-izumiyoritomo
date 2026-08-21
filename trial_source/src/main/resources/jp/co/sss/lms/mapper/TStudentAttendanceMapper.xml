@@ -86,23 +86,18 @@
 		WHERE student_attendance_id = #{studentAttendanceId}
 	</update>
 	
-	<select id="notEnterCount" resultType="int">
-		SELECT COUNT(DISTINCT cast(t2.date AS DATE))
-		FROM m_course t1
-			INNER JOIN m_section t2
-				ON t2.course_id = t1.course_id
-				AND t2.delete_flg = 0
-			LEFT OUTER JOIN t_student_attendance t3
-				ON t3.lms_user_id = #{lmsUserId}
-				AND cast(t2.date AS DATE) = cast(t3.training_date AS DATE)
-				AND t3.delete_flg = 0
-		WHERE t1.course_id = #{courseId}
-			AND t1.delete_flg = 0
-			AND cast(t2.date AS DATE) &lt; cast(#{today} AS DATE)
-            AND (
-                t3.student_attendance_id IS NULL
-                OR t3.training_start_time IS NULL
-                OR t3.training_end_time IS NULL
-            )
-	</select>
+
+<select id="notEnterCount" resultType="int">
+    SELECT COUNT(*)
+    FROM t_student_attendance
+    WHERE lms_user_id = #{lmsUserId}
+      AND delete_flg = #{deleteFlg}
+      AND CAST(training_date AS DATE) &lt; CAST(#{trainingDate} AS DATE)
+      AND (status IS NULL OR status != 1)
+      AND (
+          training_start_time IS NULL OR training_end_time = ''
+      OR training_end_time IS NULL OR training_end_time = ''
+      )
+</select>
+
 </mapper>
