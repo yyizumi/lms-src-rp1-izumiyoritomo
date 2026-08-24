@@ -246,6 +246,31 @@ public class StudentAttendanceService {
 				dailyAttendanceForm.setBlankTimeValue(String.valueOf(
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
+			
+//			//退勤時間を「時」「分」に分割
+//			if (attendanceManagementDto.getTrainingEndTime() != null) {
+//
+//	            dailyAttendanceForm.setTrainingEndTimeHour(
+//	                    attendanceUtil.getHour(
+//	                            attendanceManagementDto.getTrainingEndTime()));
+//
+//	            dailyAttendanceForm.setTrainingEndTimeMinute(
+//	                    attendanceUtil.getMinute(
+//	                            attendanceManagementDto.getTrainingEndTime()));
+//	        }
+//			
+//			//中抜け時間
+//			if (attendanceManagementDto.getBlankTime() != null) {
+//
+//	            dailyAttendanceForm.setBlankTime(
+//	                    attendanceManagementDto.getBlankTime());
+//
+//	            dailyAttendanceForm.setBlankTimeValue(
+//	                    String.valueOf(
+//	                            attendanceUtil.calcBlankTime(
+//	                                    attendanceManagementDto.getBlankTime())));
+//	        }
+			
 			dailyAttendanceForm.setStatus(String.valueOf(attendanceManagementDto.getStatus()));
 			dailyAttendanceForm.setNote(attendanceManagementDto.getNote());
 			dailyAttendanceForm.setSectionName(attendanceManagementDto.getSectionName());
@@ -342,6 +367,7 @@ public class StudentAttendanceService {
 	 * 
 	 * @return 過去日の未入力が存在するか
 	 * @throws ParseException
+	 * Boolean （trueまたはfalseを返す）
 	 */
 	public Boolean notEnterCheck() throws ParseException {
 		// 今日の日付を取得

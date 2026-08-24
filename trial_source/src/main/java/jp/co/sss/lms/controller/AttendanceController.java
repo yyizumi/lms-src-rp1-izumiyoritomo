@@ -37,7 +37,7 @@ public class AttendanceController {
 	 * @param courseId
 	 * @param model
 	 * @return 勤怠管理画面
-	 * @throws ParseException
+	 * @throws ParseException （例外処理の宣言）
 	 */
 	@RequestMapping(path = "/detail", method = RequestMethod.GET)
 	public String index(Model model) throws ParseException {
@@ -48,8 +48,10 @@ public class AttendanceController {
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 
 	    // 過去日の未入力チェック
+		//trueまたはfalseの結果を格納する変数（notEnterCount）
 	    boolean notEnterCount = studentAttendanceService.notEnterCheck();
-
+	    
+	    //対象のhtmlにtrueまたはfalseを引き渡す
 	    model.addAttribute("notEnterCount", notEnterCount);
 
 	    return "attendance/detail";
