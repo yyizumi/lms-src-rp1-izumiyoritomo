@@ -368,13 +368,14 @@ public class StudentAttendanceService {
 	 * @return 過去日の未入力が存在するか
 	 * @throws ParseException
 	 * Boolean （trueまたはfalseを返す）
+	 * trainingDate (今日の日付を取得)
+	 * count (過去日の未入力件数を取得)
 	 */
 	public Boolean notEnterCheck() throws ParseException {
-		// 今日の日付を取得
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		String trainingDate = sdf.format(new Date());
 
-		// 過去日の未入力件数を取得
 		Integer lmsUserId = loginUserDto.getLmsUserId();
 		Short deleteFlg = 0;
 

@@ -62,11 +62,14 @@ public interface TStudentAttendanceMapper {
 	 * 
 	 * @param tStudentAttendance
 	 * @return 更新結果
+	 * @param 名前を付ける
 	 */
 	Boolean update(TStudentAttendance tStudentAttendance);
 
-	int notEnterCount(@Param("lmsUserId") Integer lmsUserId,
+	Integer notEnterCount(
+			@Param("lmsUserId") Integer lmsUserId,
 			@Param("deleteFlg") Short deleteFlg,
-			@Param("trainingDate") String today);
+			@Param("trainingDate") String today
+			);
 
 }
