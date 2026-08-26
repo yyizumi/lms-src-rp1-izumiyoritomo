@@ -32,8 +32,6 @@ import jp.co.sss.lms.util.TrainingTime;
 @Service
 public class StudentAttendanceService {
 	
-//	@Autowired
-//	private TrainingTime trainingTime;
 	@Autowired
 	private DateUtil dateUtil;
 	@Autowired
@@ -243,33 +241,38 @@ public class StudentAttendanceService {
 			dailyAttendanceForm.setTrainingEndTime(attendanceManagementDto.getTrainingEndTime());
 			if (attendanceManagementDto.getBlankTime() != null) {
 				dailyAttendanceForm.setBlankTime(attendanceManagementDto.getBlankTime());
+				attendanceForm.setHourMap(attendanceUtil.getHourMap());
+				attendanceForm.setMinuteMap(attendanceUtil.getMinuteMap());
 				dailyAttendanceForm.setBlankTimeValue(String.valueOf(
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
 			
-			//退勤時間を「時」「分」に分割
-			if (attendanceManagementDto.getTrainingEndTime() != null) {
+			// 出勤時間を「時」「分」に分割
+			if (attendanceManagementDto.getTrainingStartTime() != null
+			        && !attendanceManagementDto.getTrainingStartTime().isEmpty()) {
 
-	            dailyAttendanceForm.setTrainingEndTimeHour(
-	                    attendanceUtil.getHourMap(
-	                            attendanceManagementDto.getTrainingEndTime()));
+			    dailyAttendanceForm.setTrainingStartTimeHour(
+			            attendanceUtil.getHour(
+			                    attendanceManagementDto.getTrainingStartTime()));
 
-	            dailyAttendanceForm.setTrainingEndTimeMinute(
-	                    attendanceUtil.getMinuteMap(
-	                            attendanceManagementDto.getTrainingEndTime()));
-	        }
+			    dailyAttendanceForm.setTrainingStartTimeMinute(
+			            attendanceUtil.getMinute(
+			                    attendanceManagementDto.getTrainingStartTime()));
+			}
+
+			// 退勤時間を「時」「分」に分割
+			if (attendanceManagementDto.getTrainingEndTime() != null
+			        && !attendanceManagementDto.getTrainingEndTime().isEmpty()) {
+
+			    dailyAttendanceForm.setTrainingEndTimeHour(
+			            attendanceUtil.getHour(
+			                    attendanceManagementDto.getTrainingEndTime()));
+
+			    dailyAttendanceForm.setTrainingEndTimeMinute(
+			            attendanceUtil.getMinute(
+			                    attendanceManagementDto.getTrainingEndTime()));
+			}
 			
-			//中抜け時間
-			if (attendanceManagementDto.getBlankTime() != null) {
-
-	            dailyAttendanceForm.setBlankTime(
-	                    attendanceManagementDto.getBlankTime());
-
-	            dailyAttendanceForm.setBlankTimeValue(
-	                    String.valueOf(
-	                            attendanceUtil.calcBlankTime(
-	                                    attendanceManagementDto.getBlankTime())));
-	        }
 			
 			dailyAttendanceForm.setStatus(String.valueOf(attendanceManagementDto.getStatus()));
 			dailyAttendanceForm.setNote(attendanceManagementDto.getNote());
@@ -360,6 +363,38 @@ public class StudentAttendanceService {
 		}
 		// 完了メッセージ
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
+	}
+	
+	/**
+	 * 入力された出退勤の「時」「分」をhh:mm形式に変換し、AttendanceFormにセットする
+	 *
+	 * @param attendanceForm 勤怠フォーム
+	 */
+	public void formatConversion(AttendanceForm attendanceForm) {
+
+	    // 日次の勤怠フォームをループ
+	    for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {
+
+	        // 出勤の「時」「分」が共に入力されている場合
+	        if (dailyAttendanceForm.getTrainingStartTimeHour() != null
+	                && dailyAttendanceForm.getTrainingStartTimeMinute() != null) {
+
+	            dailyAttendanceForm.setTrainingStartTime(
+	                    String.format("%02d:%02d",
+	                            dailyAttendanceForm.getTrainingStartTimeHour(),
+	                            dailyAttendanceForm.getTrainingStartTimeMinute()));
+	        }
+
+	        // 退勤の「時」「分」が共に入力されている場合
+	        if (dailyAttendanceForm.getTrainingEndTimeHour() != null
+	                && dailyAttendanceForm.getTrainingEndTimeMinute() != null) {
+
+	            dailyAttendanceForm.setTrainingEndTime(
+	                    String.format("%02d:%02d",
+	                            dailyAttendanceForm.getTrainingEndTimeHour(),
+	                            dailyAttendanceForm.getTrainingEndTimeMinute()));
+	        }
+	    }
 	}
 	
 	/**
