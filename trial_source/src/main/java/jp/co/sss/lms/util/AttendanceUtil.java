@@ -148,7 +148,7 @@ public class AttendanceUtil {
 	}
 	
 	/**
-	 * 時間のプルダウンマップを生成
+	 * 時間のプルダウンマップを生成 伊豆味頼倫 task26
 	 *
 	 * @return 時間マップ
 	 */
@@ -156,7 +156,7 @@ public class AttendanceUtil {
 	    LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
 	    map.put(null, "");
 
-	    for (int i = 1; i <= 12; i++) {
+	    for (int i = 0; i <= 23; i++) {
 	        map.put(i, String.format("%02d", i));
 	    }
 
@@ -164,7 +164,7 @@ public class AttendanceUtil {
 	}
 
 	/**
-	 * 分のプルダウンマップを生成
+	 * 分のプルダウンマップを生成 伊豆味頼倫 task26
 	 *
 	 * @return 分マップ
 	 */
